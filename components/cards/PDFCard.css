@@ -1,0 +1,153 @@
+/* ============================================
+   PDFCard.css - Dynoba Stylesheet
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --card-bg: #ffffff;
+  --card-border: #e8eaf0;
+  --card-radius: 14px;
+  --card-shadow: 0 1px 4px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --card-shadow-hover: 0 8px 24px rgba(37, 99, 235, 0.10), 0 2px 8px rgba(0, 0, 0, 0.06);
+  --brand-blue: #2563eb;
+  --brand-blue-mid: #dbeafe;
+  --text-primary: #111827;
+  --text-tag: #2563eb;
+  --tag-bg: #eff6ff;
+  --transition: 0.2s ease;
+  --font: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+.pdf-card-link {
+  display: block;
+  height: 100%;
+  text-decoration: none;
+}
+
+.pdf-card {
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--card-radius);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-family: var(--font);
+  box-shadow: var(--card-shadow);
+  transition: box-shadow var(--transition), border-color var(--transition), transform var(--transition), background var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.pdf-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #2563eb, #60a5fa);
+  opacity: 0;
+  border-radius: var(--card-radius) var(--card-radius) 0 0;
+  transition: opacity var(--transition);
+}
+
+.pdf-card:hover {
+  box-shadow: var(--card-shadow-hover);
+  border-color: var(--brand-blue-mid);
+  transform: translateY(-3px);
+  background: #fafcff;
+}
+
+.pdf-card:hover::before {
+  opacity: 1;
+}
+
+.pdf-card-media {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  min-height: 170px;
+  padding: 18px 18px 0;
+}
+
+.pdf-card-image,
+.pdf-card-icon {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+}
+
+.pdf-card-image {
+  object-fit: cover;
+  object-position: center;
+  border: 1px solid rgba(219, 234, 254, 0.8);
+  background: linear-gradient(180deg, #f8fbff 0%, #eef5ff 100%);
+  transition: transform 0.35s ease;
+}
+
+.pdf-card:hover .pdf-card-image {
+  transform: scale(1.03);
+}
+
+.pdf-card-icon {
+  background: #eff6ff;
+  border: 1.5px solid #dbeafe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+}
+
+.pdf-card-top {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  padding: 0 24px 24px;
+}
+
+.pdf-card-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.45;
+  letter-spacing: -0.2px;
+  transition: color var(--transition);
+}
+
+.pdf-card:hover .pdf-card-title {
+  color: var(--brand-blue);
+}
+
+.pdf-card-subject {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-tag);
+  background: var(--tag-bg);
+  border: 1px solid var(--brand-blue-mid);
+  border-radius: 20px;
+  padding: 3px 10px;
+  width: fit-content;
+  letter-spacing: 0.2px;
+}
+
+.pdf-card-subject::before {
+  content: '•';
+  font-size: 6px;
+  color: var(--brand-blue);
+}
+
+@media (max-width: 767px) {
+  .pdf-card-media {
+    min-height: 156px;
+    padding: 16px 16px 0;
+  }
+
+  .pdf-card-top {
+    padding: 0 20px 20px;
+  }
+}

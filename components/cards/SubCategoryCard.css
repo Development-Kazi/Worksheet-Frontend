@@ -1,0 +1,192 @@
+/* ============================================
+   SubCategoryCard.css - Dynoba Stylesheet
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --card-bg: #ffffff;
+  --card-border: #e8eaf0;
+  --card-radius: 14px;
+  --card-shadow: 0 1px 4px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --card-shadow-hover: 0 8px 24px rgba(37, 99, 235, 0.10), 0 2px 8px rgba(0, 0, 0, 0.06);
+  --brand-blue: #2563eb;
+  --brand-blue-soft: #eff6ff;
+  --brand-blue-mid: #dbeafe;
+  --text-primary: #111827;
+  --text-muted: #6b7280;
+  --transition: 0.2s ease;
+  --font: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+.subcat-card-link {
+  text-decoration: none;
+  display: block;
+  height: 100%;
+}
+
+.subcat-card {
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--card-radius);
+  height: 100%;
+  cursor: pointer;
+  font-family: var(--font);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: var(--card-shadow);
+  transition: box-shadow var(--transition), border-color var(--transition), transform var(--transition), background var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.subcat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #2563eb, #60a5fa);
+  opacity: 0;
+  transition: opacity var(--transition);
+  border-radius: var(--card-radius) var(--card-radius) 0 0;
+}
+
+.subcat-card:hover {
+  box-shadow: var(--card-shadow-hover);
+  border-color: var(--brand-blue-mid);
+  transform: translateY(-3px);
+  background: #fafcff;
+}
+
+.subcat-card:hover::before {
+  opacity: 1;
+}
+
+.subcat-card-media {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  min-height: 170px;
+  padding: 18px 18px 0;
+}
+
+.subcat-card-image,
+.subcat-card-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+}
+
+.subcat-card-image {
+  object-fit: cover;
+  object-position: center;
+  border: 1px solid rgba(219, 234, 254, 0.8);
+  background: linear-gradient(180deg, #f8fbff 0%, #eef5ff 100%);
+  image-rendering: auto;
+  transition: transform 0.35s ease;
+}
+
+.subcat-card-placeholder {
+  background: var(--brand-blue-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition);
+}
+
+.subcat-card:hover .subcat-card-placeholder {
+  background: var(--brand-blue-mid);
+}
+
+.subcat-card:hover .subcat-card-image {
+  transform: scale(1.03);
+}
+
+.subcat-card-placeholder-icon {
+  font-size: 32px;
+}
+
+.subcat-card-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--brand-blue);
+  padding: 0 24px;
+}
+
+.subcat-card-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.2px;
+  line-height: 1.4;
+  transition: color var(--transition);
+  padding: 0 24px;
+}
+
+.subcat-card:hover .subcat-card-title {
+  color: var(--brand-blue);
+}
+
+.subcat-card-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.65;
+  flex: 1;
+  padding: 0 24px;
+}
+
+.subcat-card-desc p,
+.subcat-card-desc li,
+.subcat-card-desc span,
+.subcat-card-desc strong,
+.subcat-card-desc em {
+  color: inherit;
+}
+
+.subcat-card-desc p + p {
+  margin-top: 8px;
+}
+
+.subcat-card-desc ul,
+.subcat-card-desc ol {
+  margin: 8px 0 0 18px;
+}
+
+.subcat-card-arrow {
+  font-size: 12px;
+  color: var(--brand-blue);
+  font-weight: 600;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity var(--transition), transform var(--transition);
+  align-self: flex-start;
+  padding: 0 24px 24px;
+}
+
+.subcat-card:hover .subcat-card-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+@media (max-width: 767px) {
+  .subcat-card-media {
+    min-height: 156px;
+    padding: 16px 16px 0;
+  }
+
+  .subcat-card-eyebrow,
+  .subcat-card-title,
+  .subcat-card-desc,
+  .subcat-card-arrow {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .subcat-card-arrow {
+    padding-bottom: 20px;
+  }
+}

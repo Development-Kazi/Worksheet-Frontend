@@ -1,0 +1,103 @@
+/* ============================================
+   CategoryGrid.css — Dynoba Stylesheet
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --text-primary: #111827;
+  --text-muted: #6b7280;
+  --brand-blue: #2563eb;
+  --section-gap: 48px;
+  --font: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+/* ── Section ── */
+.category-grid-section {
+  padding: 48px 24px;
+  font-family: var(--font);
+}
+
+/* ── Section Header ── */
+.category-grid-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 12px;
+}
+
+.category-grid-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.category-grid-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--brand-blue);
+}
+
+.category-grid-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.4px;
+}
+
+.category-grid-view-all {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brand-blue);
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 6px 14px;
+  border: 1.5px solid #dbeafe;
+  border-radius: 8px;
+  background: #eff6ff;
+  transition: background 0.17s ease, border-color 0.17s ease;
+  flex-shrink: 0;
+}
+
+.category-grid-view-all:hover {
+  background: #dbeafe;
+  border-color: var(--brand-blue);
+}
+
+/* ── Grid ── */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .category-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+}
+
+/* ── Staggered fade-in animation ── */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.category-grid > * {
+  animation: fadeUp 0.35s ease both;
+}
+
+.category-grid > *:nth-child(1) { animation-delay: 0.05s; }
+.category-grid > *:nth-child(2) { animation-delay: 0.10s; }
+.category-grid > *:nth-child(3) { animation-delay: 0.15s; }
+.category-grid > *:nth-child(4) { animation-delay: 0.20s; }

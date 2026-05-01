@@ -1,0 +1,27 @@
+/* ============================================
+   Container.css — Dynoba Stylesheet
+   ============================================ */
+
+:root {
+  --container-max-width: 1280px;
+  --container-px: 24px;
+  --container-px-sm: 16px;
+}
+
+/* ── Base Container ── */
+.container {
+  width: 100%;
+  max-width: var(--container-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-px);
+  padding-right: var(--container-px);
+}
+
+/* ── Responsive Padding ── */
+@media (max-width: 640px) {
+  .container {
+    padding-left: var(--container-px-sm);
+    padding-right: var(--container-px-sm);
+  }
+}

@@ -1,0 +1,125 @@
+.sidebar {
+  width: 260px;
+  background: var(--bg-white);
+  border-right: 1.5px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, margin-left 0.3s ease;
+  z-index: 99;
+}
+
+/* ── Mobile Logic ── */
+@media (max-width: 767px) {
+  .sidebar {
+    position: fixed;
+    top: var(--nav-height, 64px);
+    left: 0;
+    height: calc(100vh - var(--nav-height, 64px));
+    transform: translateX(-100%); /* Hidden by default */
+  }
+
+  .sidebar--open {
+    transform: translateX(0); /* Slide in */
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    top: var(--nav-height, 64px);
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 98;
+    backdrop-filter: blur(2px);
+  }
+}
+
+/* ── Desktop Logic ── */
+@media (min-width: 768px) {
+  .sidebar {
+    position: sticky;
+    top: var(--nav-height, 64px);
+    height: calc(100vh - var(--nav-height, 64px));
+    margin-left: -260px; /* Hidden by default via margin */
+  }
+
+  .sidebar--open {
+    margin-left: 0; /* Pushes content to the right */
+  }
+
+  .sidebar-overlay {
+    display: none; /* No overlay needed on desktop */
+  }
+}
+
+/* ── Inner Styling (Fixing the "squashed" look) ── */
+.sidebar-close-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-heading {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sidebar-list {
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.sidebar-parent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  margin-bottom: 4px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.sidebar-parent:hover {
+  background: var(--brand-blue-soft);
+  color: var(--brand-blue);
+}
+
+.sidebar-chevron {
+  font-size: 10px;
+  transition: transform 0.2s;
+}
+
+.sidebar-chevron.rotated {
+  transform: rotate(90deg);
+}
+
+.sidebar-children {
+  margin-left: 12px;
+  border-left: 1.5px solid var(--border);
+  padding-left: 8px;
+}
+
+.sidebar-sub {
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  border-radius: var(--radius-sm);
+}
+
+.sidebar-leaf {
+  padding: 6px 12px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.sidebar-leaf:hover {
+  color: var(--brand-blue);
+}

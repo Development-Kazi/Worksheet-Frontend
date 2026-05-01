@@ -1,0 +1,18 @@
+/* ============================================
+   page.css — Dynoba Home Page
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+/* ── Main Wrapper ── */
+.home-main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+/* ── Section Divider ── */
+.home-main > * + * {
+  border-top: 1.5px solid #e8eaf0;
+}

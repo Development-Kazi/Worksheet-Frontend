@@ -1,0 +1,171 @@
+/* ============================================
+   Footer.css — Dynoba Stylesheet
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --footer-bg: #f8fafc;
+  --footer-border: #e8eaf0;
+  --footer-text: #4b5563;
+  --footer-text-muted: #9ca3af;
+  --footer-heading: #111827;
+  --footer-link-hover: #2563eb;
+  --footer-brand: #2563eb;
+  --footer-bottom-bg: #f1f5f9;
+  --font: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --transition: 0.18s ease;
+}
+
+/* ── Footer Wrapper ── */
+.footer {
+  background: var(--footer-bg);
+  border-top: 1.5px solid var(--footer-border);
+  margin-top: 48px;
+  font-family: var(--font);
+}
+
+.footer-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 48px 24px 0;
+}
+
+/* ── Grid ── */
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+@media (min-width: 768px) {
+  .footer-grid {
+    grid-template-columns: 1.4fr 1fr;
+    gap: 40px;
+  }
+}
+
+/* ── Brand Column ── */
+.footer-brand-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  margin-bottom: 10px;
+}
+
+.footer-brand-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+}
+
+.footer-brand-text {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--footer-heading);
+  letter-spacing: -0.3px;
+}
+
+.footer-description {
+  font-size: 13.5px;
+  color: var(--footer-text);
+  line-height: 1.7;
+  max-width: 260px;
+}
+
+.footer-description-rich p,
+.footer-description-rich li,
+.footer-description-rich a,
+.footer-description-rich strong,
+.footer-description-rich span {
+  color: inherit;
+}
+
+.footer-description-rich p + p {
+  margin-top: 10px;
+}
+
+.footer-description-rich ul,
+.footer-description-rich ol {
+  margin: 10px 0 0 18px;
+}
+
+/* ── Column Headings ── */
+.footer-col-heading {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--footer-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 14px;
+}
+
+/* ── Link Lists ── */
+.footer-link-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-link-list a {
+  text-decoration: none;
+  font-size: 13.5px;
+  color: var(--footer-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color var(--transition), gap var(--transition);
+}
+
+.footer-link-list a::before {
+  content: '›';
+  font-size: 15px;
+  color: var(--footer-text-muted);
+  transition: color var(--transition), transform var(--transition);
+}
+
+.footer-link-list a:hover {
+  color: var(--footer-link-hover);
+  gap: 9px;
+}
+
+.footer-link-list a:hover::before {
+  color: var(--footer-link-hover);
+  transform: translateX(2px);
+}
+
+/* ── Bottom Bar ── */
+.footer-bottom {
+  margin-top: 40px;
+  border-top: 1.5px solid var(--footer-border);
+  background: var(--footer-bottom-bg);
+  padding: 16px 24px;
+  font-size: 12.5px;
+  color: var(--footer-text-muted);
+}
+
+.footer-bottom-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+@media (min-width: 768px) {
+  .footer-bottom-inner {
+    flex-direction: row;
+    justify-content: center;
+  }
+}

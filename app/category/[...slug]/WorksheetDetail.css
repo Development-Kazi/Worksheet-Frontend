@@ -1,0 +1,392 @@
+.worksheet-detail-page {
+  padding-bottom: 5rem;
+  background-color: #ffffff;
+  min-height: 100vh;
+  color: #1e293b;
+}
+
+.worksheet-detail-page .worksheet-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.worksheet-detail-page .breadcrumb-wrapper {
+  padding: 2rem 0 1.5rem;
+  font-size: 0.9rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.worksheet-detail-page .breadcrumb-wrapper a {
+  color: #64748b;
+  text-decoration: none;
+}
+
+.worksheet-detail-page .breadcrumb-wrapper a:hover {
+  color: #2563eb;
+}
+
+.worksheet-detail-page .breadcrumb-separator {
+  margin: 0 0.5rem;
+  color: #cbd5e1;
+}
+
+.worksheet-detail-page .breadcrumb-current {
+  color: #1e293b;
+}
+
+.worksheet-detail-page .worksheet-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 4rem;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .worksheet-detail-page .worksheet-layout {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+/* Header Section */
+.worksheet-detail-page .worksheet-header {
+  margin-bottom: 3rem;
+}
+
+.worksheet-detail-page .category-tags {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.worksheet-detail-page .tag-btn {
+  padding: 0.4rem 1.25rem;
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.worksheet-detail-page .tag-btn.primary {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.worksheet-detail-page .tag-btn.secondary {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.worksheet-detail-page .worksheet-title {
+  font-size: 3.25rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 1.25rem;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.worksheet-detail-page .worksheet-subtitle {
+  font-size: 1.25rem;
+  color: #475569;
+  line-height: 1.6;
+  max-width: 850px;
+  margin-bottom: 2.5rem;
+}
+
+.worksheet-detail-page .author-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 2rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.worksheet-detail-page .author-img {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.worksheet-detail-page .author-meta h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 0.15rem 0;
+}
+
+.worksheet-detail-page .author-meta p {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Learning Objectives Section */
+.worksheet-detail-page .learning-objectives {
+  margin-top: 1rem;
+  background: white;
+  border-radius: 16px;
+  padding: 2.5rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+.worksheet-detail-page .objectives-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 2rem;
+}
+
+.worksheet-detail-page .objectives-title svg {
+  color: #2563eb;
+}
+
+.worksheet-detail-page .objectives-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem 2rem;
+}
+
+@media (max-width: 768px) {
+  .worksheet-detail-page .objectives-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+.worksheet-detail-page .objective-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.worksheet-detail-page .objective-item svg {
+  color: #2563eb;
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+}
+
+.worksheet-detail-page .objective-text {
+  color: #334155;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* Sidebar Section */
+.worksheet-detail-page .worksheet-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.worksheet-detail-page .download-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+.worksheet-detail-page .card-media {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  background-color: #000;
+}
+
+.worksheet-detail-page .card-img {
+  width: 100%;
+  aspect-ratio: 1.5;
+  object-fit: cover;
+  display: block;
+}
+
+.worksheet-detail-page .page-badge {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.worksheet-detail-page .btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.worksheet-detail-page .btn-primary {
+  background: #1d4ed8;
+  color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+  width: 100%;
+  transition: background-color 0.2s ease;
+  text-decoration: none;
+}
+
+.worksheet-detail-page .btn-primary:hover {
+  background: #1e3a8a;
+}
+
+.worksheet-detail-page .btn-secondary {
+  background: #f8fafc;
+  color: #1d4ed8;
+  padding: 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid #cbd5e1;
+  width: 100%;
+  transition: background-color 0.2s ease;
+  text-decoration: none;
+}
+
+.worksheet-detail-page .btn-secondary.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.worksheet-detail-page .btn-secondary:not(.disabled):hover {
+  background: #f1f5f9;
+}
+
+.worksheet-detail-page .includes-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.75rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+.worksheet-detail-page .includes-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 1.5rem;
+}
+
+.worksheet-detail-page .includes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.worksheet-detail-page .includes-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #334155;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.worksheet-detail-page .includes-item svg {
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.worksheet-detail-page .includes-rich-content {
+  color: #334155;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.worksheet-detail-page .includes-rich-content ul,
+.worksheet-detail-page .includes-rich-content ol {
+  list-style: none !important;
+  padding-left: 0 !important;
+  margin: 0 !important;
+}
+
+.worksheet-detail-page .includes-rich-content li {
+  list-style: none !important;
+  list-style-type: none !important;
+  margin-bottom: 0.75rem;
+  padding-left: 0 !important;
+}
+
+.worksheet-detail-page .includes-rich-content p {
+  margin-bottom: 0.5rem;
+}
+
+/* Related Worksheets Section */
+.worksheet-detail-page .related-worksheets-section {
+  margin-top: 5rem;
+  padding-top: 4rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.worksheet-detail-page .related-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 2.5rem;
+  letter-spacing: -0.02em;
+}
+
+.worksheet-detail-page .related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 2rem;
+}
+
+/* Rich Description Styling */
+.worksheet-detail-page .worksheet-detail-description {
+  color: #334155;
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+.worksheet-detail-page .worksheet-detail-description h2,
+.worksheet-detail-page .worksheet-detail-description h3 {
+  color: #0f172a;
+  margin: 2.5rem 0 1rem;
+  font-weight: 700;
+}
+
+.worksheet-detail-page .worksheet-detail-description p {
+  margin-bottom: 1.5rem;
+}
+
+.worksheet-detail-page .worksheet-detail-description ul,
+.worksheet-detail-page .worksheet-detail-description ol {
+  margin: 1.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.worksheet-detail-page .worksheet-detail-description li {
+  margin-bottom: 0.75rem;
+}

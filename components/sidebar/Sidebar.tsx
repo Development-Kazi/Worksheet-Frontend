@@ -106,7 +106,9 @@ export default function Sidebar({ open = false, onClose }: Props) {
                   {cat.name}
                 </Link>
               </span>
-              <span className={`sidebar-chevron ${openIndex === i ? "rotated" : ""}`}>▶</span>
+              {cat.children.length > 0 && (
+                <span className={`sidebar-chevron ${openIndex === i ? "rotated" : ""}`}>▶</span>
+              )}
             </div>
 
             {openIndex === i && cat.children.length > 0 && (

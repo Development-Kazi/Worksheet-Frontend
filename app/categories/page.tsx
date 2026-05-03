@@ -15,7 +15,7 @@ export default async function CategoriesPage() {
   let categories: ClientCategory[] = [];
 
   try {
-    categories = (await getClientCategories()).filter((category) => !category.parent);
+    categories = await getClientCategories();
   } catch (error) {
     console.error("Failed to load all categories:", error);
   }

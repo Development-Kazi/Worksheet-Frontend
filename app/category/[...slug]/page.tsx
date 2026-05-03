@@ -7,7 +7,15 @@ import {
   getClientCategories,
   getClientWorksheets,
 } from "@/lib/client-api";
+import { 
+  Download, 
+  BookOpen,
+  ListChecks,
+  CheckSquare
+} from "lucide-react";
 import "./CategoryPage.css";
+import "./WorksheetDetail.css";
+import PDFCard from "@/components/cards/PDFCard";
 
 type PageProps = {
   params: Promise<{ slug: string[] }>;
@@ -43,7 +51,8 @@ const findPathNodes = (roots: CategoryNode[], slugArray: string[]) => {
   let currentLevel = roots;
 
   for (const slug of slugArray) {
-    const currentNode = currentLevel.find((node) => node.slug === slug) ?? null;
+    const decodedSlug = decodeURIComponent(slug);
+    const currentNode = currentLevel.find((node) => node.slug === decodedSlug) ?? null;
     if (!currentNode) {
       return null;
     }
@@ -125,15 +134,11 @@ async function resolveCategoryWorksheetData(slugArray: string[]) {
     };
   }
 
-  const worksheetSlug = slugArray[slugArray.length - 1];
+  const worksheetSlug = decodeURIComponent(slugArray[slugArray.length - 1]);
   const categorySlugPath = slugArray.slice(0, -1);
   const categoryPathNodes = findPathNodes(tree, categorySlugPath);
   const worksheetCategory = categoryPathNodes?.[categoryPathNodes.length - 1] ?? null;
-  const worksheet = worksheetCategory
-    ? worksheets.find(
-        (item) => item.slug === worksheetSlug && item.category?._id === worksheetCategory._id,
-      ) ?? null
-    : null;
+  const worksheet = worksheets.find((item) => item.slug === worksheetSlug) ?? null;
 
   return {
     categoriesById,
@@ -145,6 +150,7 @@ async function resolveCategoryWorksheetData(slugArray: string[]) {
     worksheet,
     categoryPathNodes,
     categorySlugPath,
+    allWorksheets: worksheets,
   };
 }
 
@@ -229,6 +235,7 @@ export default async function CategoryPage({ params }: PageProps) {
     worksheet,
     categoryPathNodes,
     categorySlugPath,
+    allWorksheets,
   } = await resolveCategoryWorksheetData(slugArray);
 
   if (currentCategory) {
@@ -236,7 +243,7 @@ export default async function CategoryPage({ params }: PageProps) {
     const currentTitle = currentCategory.metaTitle?.trim() || currentName;
 
     const paths = [
-      { name: "Home", href: "/" },
+      { name: "Categories", href: "/categories" },
       ...(currentPathNodes ?? []).map((node, index) => ({
         name: node.name,
         href: "/category/" + slugArray.slice(0, index + 1).join("/"),
@@ -272,6 +279,11 @@ export default async function CategoryPage({ params }: PageProps) {
       },
     };
 
+    const parentNode = currentPathNodes && currentPathNodes.length > 1 
+      ? currentPathNodes[currentPathNodes.length - 2] 
+      : null;
+    const parentName = parentNode?.name || "";
+
     return (
       <div className="category-page">
         <div className="category-main">
@@ -299,6 +311,7 @@ export default async function CategoryPage({ params }: PageProps) {
 
           <SearchableCategoryContent
             currentName={currentName}
+            parentName={parentName}
             slugPrefix={slugArray.join("/")}
             childCategories={childCategories}
             worksheetItems={worksheetItems}
@@ -321,9 +334,9 @@ export default async function CategoryPage({ params }: PageProps) {
     );
   }
 
-  const worksheetTitle = worksheet.metaTitle?.trim() || worksheet.title;
+  const worksheetTitle = worksheet.title;
   const worksheetPaths = [
-    { name: "Home", href: "/" },
+    { name: "Categories", href: "/categories" },
     ...categoryPathNodes.map((node, index) => ({
       name: node.name,
       href: "/category/" + categorySlugPath.slice(0, index + 1).join("/"),
@@ -339,8 +352,7 @@ export default async function CategoryPage({ params }: PageProps) {
     ? `/api/download?url=${encodeURIComponent(worksheet.fileUrl)}`
     : undefined;
   const worksheetDescription =
-    stripHtml(worksheet.metaDescription) ||
-    stripHtml(worksheet.description) ||
+    worksheet.metaDescription ||
     worksheet.subTitle ||
     "Printable worksheet details and download.";
   const worksheetStructuredData = {
@@ -365,78 +377,143 @@ export default async function CategoryPage({ params }: PageProps) {
         : undefined,
   };
 
+
+
   return (
-    <div className="category-page">
-      <div className="category-main">
+    <div className="worksheet-detail-page">
+      <div className="worksheet-container">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(worksheetStructuredData),
           }}
         />
-        <div className="category-page-header">
+
+        {/* Breadcrumbs */}
+        <div className="breadcrumb-wrapper">
           <Breadcrumb paths={worksheetPaths} />
-          <h1 className="category-page-title">{worksheetTitle}</h1>
-          {worksheet.metaDescription ? (
-            <div
-              className="category-page-desc category-page-desc--detail category-page-desc-rich"
-              dangerouslySetInnerHTML={{ __html: worksheet.metaDescription }}
-            />
-          ) : null}
         </div>
 
-        <section className="worksheet-detail-layout">
-          <aside className="worksheet-detail-sidebar">
-            {worksheet.thumbnail ? (
-              <img
-                src={worksheet.thumbnail}
-                alt={worksheetTitle}
-                className="worksheet-detail-image"
-              />
-            ) : (
-              <div className="worksheet-detail-image-placeholder">📄</div>
-            )}
-          </aside>
+        <div className="worksheet-layout">
+          {/* Left Column (Main Content) */}
+          <div className="worksheet-main-content">
+            
+            <header className="worksheet-header">
+              <h1 className="worksheet-title">{worksheetTitle}</h1>
+              <p className="worksheet-subtitle">{worksheetDescription}</p>
 
-          <div className="worksheet-detail-copy">
-            <div className="worksheet-detail-meta-grid">
-              {worksheet.subTitle ? (
-                <div className="worksheet-detail-meta-item">
-                  <span className="worksheet-detail-meta-label">Sub Title</span>
-                  <span className="worksheet-detail-meta-value">{worksheet.subTitle}</span>
+              {/* Author / Meta Row */}
+              <div className="author-row">
+                <img 
+                  src={worksheet.authorImage || "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150"} 
+                  alt={worksheet.author || "Author"} 
+                  className="author-img"
+                />
+                <div className="author-meta">
+                  <h4>{worksheet.author || "Admin User"}</h4>
+                  <p>
+                    Published { (worksheet.publishedDate || worksheet.createdAt)
+                      ? new Date(worksheet.publishedDate || worksheet.createdAt!).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                      : "Oct 12, 2023"}
+                  </p>
                 </div>
-              ) : null}
-
-              <div className="worksheet-detail-meta-item">
-                <span className="worksheet-detail-meta-label">Category</span>
-                <a href={categoryHref} className="worksheet-detail-meta-link">
-                  {worksheetCategory.name}
-                </a>
               </div>
+            </header>
 
-              {renderWorksheetRating(worksheet.rating)}
-            </div>
 
             {worksheet.description ? (
               <div
                 className="worksheet-detail-description"
+                style={{ marginTop: '3rem' }}
                 dangerouslySetInnerHTML={{ __html: worksheet.description }}
               />
             ) : null}
 
-            <div className="worksheet-detail-actions">
-              {downloadHref ? (
-                <a href={downloadHref} className="worksheet-detail-download">
-                  Download Worksheet
-                </a>
+            
+          </div>
+
+          {/* Right Column (Sidebar) */}
+          <aside className="worksheet-sidebar">
+            
+            <div className="download-card">
+              <div className="card-media">
+                <img 
+                  src={worksheet.thumbnail || "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=800"} 
+                  alt={worksheetTitle} 
+                  className="card-img"
+                />
+              </div>
+
+              <div className="btn-group">
+                {downloadHref ? (
+                  <a href={downloadHref} className="btn-secondary">
+                    <Download size={18} />
+                    Download PDF
+                  </a>
+                ) : (
+                  <button className="btn-secondary disabled" disabled>
+                    <Download size={18} />
+                    Coming Soon
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <div className="includes-card">
+              <h3 className="includes-title">Includes</h3>
+              {worksheet.includes ? (
+                <div 
+                  className="includes-rich-content"
+                  dangerouslySetInnerHTML={{ __html: worksheet.includes }}
+                />
               ) : (
-                <button className="worksheet-detail-download worksheet-detail-download--disabled" disabled>
-                  Coming Soon
-                </button>
+                <div className="includes-list">
+                  <div className="includes-item">
+                    <BookOpen size={20} />
+                    Comprehensive Theory Guide
+                  </div>
+                  <div className="includes-item">
+                    <ListChecks size={20} />
+                    25 Practice Problems
+                  </div>
+                  <div className="includes-item">
+                    <CheckSquare size={20} />
+                    Step-by-step Answer Key
+                  </div>
+                </div>
               )}
             </div>
-          </div>
-        </section>
+            
+          </aside>
+        </div>
+
+        {/* You Might Also Like Section */}
+        {allWorksheets && worksheetCategory && (
+          (() => {
+            const related = allWorksheets.filter(
+              (item) =>
+                item.category?._id === worksheetCategory._id &&
+                item._id !== worksheet._id
+            );
+            if (related.length === 0) return null;
+            return (
+              <section className="related-worksheets-section">
+                <h2 className="related-title">You might also like</h2>
+                <div className="related-grid">
+                  {related.slice(0, 4).map((item) => (
+                    <PDFCard
+                      key={item._id}
+                      title={item.title}
+                      subject={worksheetCategory.name}
+                      thumbnail={item.thumbnail}
+                      href={buildCategoryHref(categoriesById, worksheetCategory) + "/" + item.slug}
+                    />
+                  ))}
+                </div>
+              </section>
+            );
+          })()
+        )}
       </div>
     </div>
   );

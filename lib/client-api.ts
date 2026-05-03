@@ -12,6 +12,7 @@ export type ClientCategory = {
   parent?: string | null;
   order?: number;
   image?: string;
+  icon?: string;
   status?: string;
   metaTitle?: string;
   metaDescription?: string;
@@ -33,13 +34,19 @@ export type ClientWorksheet = {
   cutPrice?: number;
   rating?: number;
   description?: string;
+  includes?: string;
   metaTitle?: string;
   metaDescription?: string;
   category?: WorksheetCategory | null;
   fileUrl?: string;
   thumbnail?: string;
+  icon?: string;
   tags?: string[];
   status?: string;
+  author?: string;
+  authorImage?: string;
+  publishedDate?: string;
+  createdAt?: string;
 };
 
 export type ClientSitePage = {
@@ -105,6 +112,7 @@ export async function getClientCategories(): Promise<ClientCategory[]> {
   return categories.map((category) => ({
     ...category,
     image: category.image ? normalizeUrl(category.image) : category.image,
+    icon: category.icon ? normalizeUrl(category.icon) : category.icon,
   }));
 }
 
@@ -114,6 +122,8 @@ export async function getClientWorksheets(): Promise<ClientWorksheet[]> {
     ...worksheet,
     fileUrl: worksheet.fileUrl ? normalizeUrl(worksheet.fileUrl) : worksheet.fileUrl,
     thumbnail: worksheet.thumbnail ? normalizeUrl(worksheet.thumbnail) : worksheet.thumbnail,
+    icon: worksheet.icon ? normalizeUrl(worksheet.icon) : worksheet.icon,
+    authorImage: worksheet.authorImage ? normalizeUrl(worksheet.authorImage) : worksheet.authorImage,
   }));
 }
 
@@ -124,6 +134,8 @@ export async function getClientWorksheetBySlug(slug: string): Promise<ClientWork
     ...worksheet,
     fileUrl: worksheet.fileUrl ? normalizeUrl(worksheet.fileUrl) : worksheet.fileUrl,
     thumbnail: worksheet.thumbnail ? normalizeUrl(worksheet.thumbnail) : worksheet.thumbnail,
+    icon: worksheet.icon ? normalizeUrl(worksheet.icon) : worksheet.icon,
+    authorImage: worksheet.authorImage ? normalizeUrl(worksheet.authorImage) : worksheet.authorImage,
   };
 }
 

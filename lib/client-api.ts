@@ -16,6 +16,7 @@ export type ClientCategory = {
   status?: string;
   metaTitle?: string;
   metaDescription?: string;
+  metaKeywords?: string;
 };
 
 export type WorksheetCategory = {
@@ -41,7 +42,7 @@ export type ClientWorksheet = {
   fileUrl?: string;
   thumbnail?: string;
   icon?: string;
-  tags?: string[];
+  metaKeywords?: string;
   status?: string;
   author?: string;
   authorImage?: string;

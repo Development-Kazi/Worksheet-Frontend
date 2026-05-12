@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default function AppShell({ children }: Props) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   return (
     <>
@@ -20,13 +20,6 @@ export default function AppShell({ children }: Props) {
           open={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
         />
-
-        {sidebarOpen && (
-          <div
-            className="sidebar-overlay"
-            onClick={() => setSidebarOpen(false)}
-          />
-        )}
 
         <main className="app-content">
           {children}

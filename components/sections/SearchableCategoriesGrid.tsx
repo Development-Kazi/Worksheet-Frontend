@@ -60,7 +60,7 @@ export default function SearchableCategoriesGrid({ categories }: Props) {
             const accentClass = colorPool[index % colorPool.length];
 
             return (
-              <div key={parent._id} className={`discipline-card ${accentClass} has-top-image`}>
+              <Link key={parent._id} href={`/category/${parent.slug}`} className={`discipline-card ${accentClass} has-top-image`}>
                 {/* Image Top */}
                 {parent.image && (
                   <div className="discipline-card-image-wrap">
@@ -100,9 +100,7 @@ export default function SearchableCategoriesGrid({ categories }: Props) {
                     ))}
                   </ul>
                 </div>
-
-                <Link href={`/category/${parent.slug}`} className="discipline-card-link" aria-label={`View ${parent.name}`} />
-              </div>
+              </Link>
             );
           })}
         </div>

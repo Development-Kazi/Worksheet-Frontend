@@ -46,7 +46,7 @@ export default async function CategoryGrid() {
             const accentClass = colorPool[index % colorPool.length];
 
             return (
-              <div key={parent._id} className={`discipline-card ${accentClass}`}>
+              <Link key={parent._id} href={`/category/${parent.slug}`} className={`discipline-card ${accentClass}`}>
                 <div className="discipline-card-top">
                   <div className="discipline-icon-box">
                     {parent.icon ? (
@@ -77,10 +77,9 @@ export default async function CategoryGrid() {
                     ))}
                   </ul>
                 </div>
-
-                <Link href={`/category/${parent.slug}`} className="discipline-card-link" aria-label={`View ${parent.name}`} />
-              </div>
+              </Link>
             );
+
           })}
         </div>
 

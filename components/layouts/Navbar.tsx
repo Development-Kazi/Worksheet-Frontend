@@ -1,7 +1,7 @@
 "use client";
  
 import Link from "next/link";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import { Menu, Search, ChevronDown } from "lucide-react";
 import { ClientCategory, getClientCategories } from "@/lib/client-api";
 import "./Navbar.css";
@@ -19,9 +19,7 @@ export default function Navbar({ onMenuClick }: Props) {
     const loadCategories = async () => {
       try {
         const data = await getClientCategories();
-        // Filter for only parent categories
-        const parents = data.filter((cat) => !cat.parent);
-        setCategories(parents);
+        setCategories(data);
       } catch (error) {
         console.error("Failed to load navbar categories:", error);
       }
@@ -29,25 +27,47 @@ export default function Navbar({ onMenuClick }: Props) {
     loadCategories();
   }, []);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setDropdownOpen(false);
+  const categoryTree = useMemo(() => {
+    const byId = new Map<string, any>();
+    categories.forEach(c => byId.set(c._id, { ...c, children: [] }));
+    const roots: any[] = [];
+    byId.forEach(node => {
+      if (node.parent && byId.has(node.parent)) {
+        byId.get(node.parent).children.push(node);
+      } else if (!node.parent) {
+        roots.push(node);
       }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    });
+    return roots;
+  }, [categories]);
+
+  const categoriesById = useMemo(() => {
+    return new Map(categories.map(c => [c._id, c]));
+  }, [categories]);
+
+  const getCategoryHref = (category: ClientCategory) => {
+    const path: string[] = [category.slug];
+    let parentId = category.parent ?? "";
+
+    while (parentId) {
+      const parent = categoriesById.get(parentId);
+      if (!parent) break;
+      path.unshift(parent.slug);
+      parentId = parent.parent ?? "";
+    }
+
+    return `/category/${path.join("/")}`;
+  };
 
   return (
     <header className="navbar-header">
       <div className="navbar-container">
- 
+
         <Link href="/" className="navbar-logo">
           <div className="navbar-logo-icon">D</div>
           <span className="navbar-logo-text">Dynoba</span>
         </Link>
- 
+
         <div className="navbar-search navbar-search-desktop">
           <Search size={16} className="navbar-search-icon" />
           <input
@@ -56,36 +76,72 @@ export default function Navbar({ onMenuClick }: Props) {
             className="navbar-search-input"
           />
         </div>
- 
+
         <nav className="navbar-nav">
           <Link href="/" className="navbar-nav-link">Home</Link>
           
-          <div className="navbar-dropdown" ref={dropdownRef}>
+          <div 
+            className="navbar-dropdown" 
+            ref={dropdownRef}
+            onMouseEnter={() => setDropdownOpen(true)}
+            onMouseLeave={() => setDropdownOpen(false)}
+          >
             <button 
               className={`navbar-nav-link navbar-dropdown-trigger ${dropdownOpen ? "active" : ""}`}
-              onClick={() => setDropdownOpen(!dropdownOpen)}
             >
               Categories <ChevronDown size={14} className={`dropdown-chevron ${dropdownOpen ? "rotated" : ""}`} />
             </button>
             
             {dropdownOpen && (
-              <div className="navbar-dropdown-content">
-                {categories.map((cat) => (
-                  <Link 
-                    key={cat._id} 
-                    href={`/category/${cat.slug}`} 
-                    className="navbar-dropdown-item"
-                    onClick={() => setDropdownOpen(false)}
-                  >
-                    {cat.name}
-                  </Link>
-                ))}
+              <div className="navbar-mega-menu">
+                <div className="mega-menu-content-card">
+                  <div className="mega-menu-grid-container">
+                    {categoryTree.map((parent) => (
+                      <div key={parent._id} className="mega-menu-column">
+                        <h4 className="mega-menu-column-title">
+                          <Link href={getCategoryHref(parent)} onClick={() => setDropdownOpen(false)}>
+                            {parent.name}
+                          </Link>
+                        </h4>
+                        
+                        <div className="mega-menu-column-links">
+                          {parent.children.map((child: any) => (
+                            <div key={child._id} className="mega-menu-child-group">
+                              <Link 
+                                href={getCategoryHref(child)} 
+                                className="mega-menu-child-link"
+                                onClick={() => setDropdownOpen(false)}
+                              >
+                                {child.name}
+                              </Link>
+
+                              {child.children.length > 0 && (
+                                <div className="mega-menu-subchild-list">
+                                  {child.children.map((grand: any) => (
+                                    <Link 
+                                      key={grand._id} 
+                                      href={getCategoryHref(grand)} 
+                                      className="mega-menu-subchild-link"
+                                      onClick={() => setDropdownOpen(false)}
+                                    >
+                                      {grand.name}
+                                    </Link>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             )}
           </div>
 
           <Link href="/#footer-about" className="navbar-nav-link">About Us</Link>
-          <Link href="/contact-us" className="navbar-nav-link">Contact Us</Link>
+          <Link href="/#footer-about" className="navbar-nav-link">Contact Us</Link>
         </nav>
  
         {/* Menu button — opens Sidebar */}

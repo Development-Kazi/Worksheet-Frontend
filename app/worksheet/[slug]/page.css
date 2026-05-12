@@ -24,7 +24,7 @@
 }
 
 .worksheet-detail-page .breadcrumb-wrapper a:hover {
-  color: #2563eb;
+  color: var(--brand-primary);
 }
 
 .worksheet-detail-page .breadcrumb-separator {
@@ -73,8 +73,8 @@
 }
 
 .worksheet-detail-page .tag-btn.primary {
-  background: #eff6ff;
-  color: #1d4ed8;
+  background: var(--brand-primary-soft);
+  color: var(--brand-primary-dark);
 }
 
 .worksheet-detail-page .tag-btn.secondary {
@@ -149,7 +149,7 @@
 }
 
 .worksheet-detail-page .objectives-title svg {
-  color: #2563eb;
+  color: var(--brand-primary);
 }
 
 .worksheet-detail-page .objectives-grid {
@@ -172,7 +172,7 @@
 }
 
 .worksheet-detail-page .objective-item svg {
-  color: #2563eb;
+  color: var(--brand-primary);
   margin-top: 0.2rem;
   flex-shrink: 0;
 }
@@ -236,7 +236,7 @@
 }
 
 .worksheet-detail-page .btn-primary {
-  background: #1d4ed8;
+  background: var(--brand-primary-dark);
   color: white;
   padding: 1rem;
   border-radius: 8px;
@@ -258,7 +258,7 @@
 
 .worksheet-detail-page .btn-secondary {
   background: #f8fafc;
-  color: #1d4ed8;
+  color: var(--brand-primary-dark);
   padding: 1rem;
   border-radius: 8px;
   font-weight: 600;

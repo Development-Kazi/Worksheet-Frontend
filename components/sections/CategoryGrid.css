@@ -26,7 +26,7 @@
 .category-heading {
   font-size: 32px;
   font-weight: 800;
-  color: #1a1a1a;
+  color: var(--text-primary);
   margin-bottom: 8px;
   letter-spacing: -1px;
 }
@@ -39,7 +39,7 @@
 .category-view-all {
   font-size: 14px;
   font-weight: 600;
-  color: #2563eb;
+  color: var(--brand-primary);
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -76,6 +76,8 @@
   flex-direction: column;
   gap: 24px;
   overflow: hidden;
+  text-decoration: none;
+  color: inherit;
 }
 
 .discipline-card.has-top-image {
@@ -118,7 +120,7 @@
 
 /* Accent Borders */
 .discipline-card.accent-red { border-top: 4px solid #ef4444; }
-.discipline-card.accent-blue { border-top: 4px solid #2563eb; }
+.discipline-card.accent-blue { border-top: 4px solid var(--brand-primary); }
 .discipline-card.accent-yellow { border-top: 4px solid #eab308; }
 
 .discipline-card-top {
@@ -135,12 +137,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #1a1a1a;
+  color: var(--text-primary);
 }
 
 .discipline-badge {
-  background: #f0f7ff;
-  color: #2563eb;
+  background: var(--brand-primary-soft);
+  color: var(--brand-primary);
   padding: 6px 12px;
   border-radius: 100px;
   font-size: 12px;
@@ -150,7 +152,7 @@
 .discipline-title {
   font-size: 20px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--text-primary);
   margin-bottom: 10px;
 }
 
@@ -175,7 +177,7 @@
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: #1a1a1a;
+  color: var(--text-primary);
   font-weight: 500;
   position: relative;
   padding-left: 12px;
@@ -189,23 +191,17 @@
   transform: translateY(-50%);
   width: 4px;
   height: 4px;
-  background: #2563eb;
+  background: var(--brand-primary);
   border-radius: 50%;
 }
 
 .check-icon {
-  color: #2563eb;
+  color: var(--brand-primary);
   flex-shrink: 0;
 }
 
 .child-text {
   color: inherit;
-}
-
-.discipline-card-link {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
 }
 
 .discipline-icon-img {
@@ -217,10 +213,5 @@
 
 .discipline-content {
   position: relative;
-  z-index: 2;
-  pointer-events: none;
 }
 
-.discipline-content * {
-  pointer-events: auto;
-}

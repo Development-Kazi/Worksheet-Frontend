@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import AppShell from "@/components/layouts/AppShell";
 import Footer from "@/components/layouts/Footer";
 
-const plusJakarta = Plus_Jakarta_Sans({
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-primary",
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -41,7 +40,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={plusJakarta.variable}>
+    <html lang="en" className={inter.variable}>
       <body>
         <AppShell>{children}</AppShell>
         <Footer />

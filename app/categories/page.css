@@ -33,7 +33,7 @@
 .categories-title {
   font-size: 30px;
   font-weight: 700;
-  color: #111827;
+  color: var(--text-primary);
   margin-bottom: 8px;
 }
 

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { X } from "lucide-react";
 import { ClientCategory, getClientCategories } from "@/lib/client-api";
@@ -14,6 +15,7 @@ type Props = {
 };
 
 export default function Sidebar({ open = false, onClose }: Props) {
+  const pathname = usePathname();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [openChild, setOpenChild] = useState<string | null>(null);
   const [categories, setCategories] = useState<ClientCategory[]>([]);
@@ -39,9 +41,27 @@ export default function Sidebar({ open = false, onClose }: Props) {
     };
   }, []);
 
+  const categoriesById = useMemo(
+    () => new Map(categories.map((category) => [category._id, category])),
+    [categories],
+  );
+
+  const getCategoryPath = (node: ClientCategory) => {
+    const path: string[] = [node.slug];
+    let parentId = node.parent ?? "";
+
+    while (parentId) {
+      const parent = categoriesById.get(parentId);
+      if (!parent) break;
+      path.unshift(parent.slug);
+      parentId = parent.parent ?? "";
+    }
+
+    return `/category/${path.join("/")}`;
+  };
+
   const categoryTree = useMemo(() => {
     const byId = new Map<string, CategoryNode>();
-
     categories.forEach((category) => {
       byId.set(category._id, { ...category, children: [] });
     });
@@ -50,7 +70,6 @@ export default function Sidebar({ open = false, onClose }: Props) {
     byId.forEach((node) => {
       const parentId = node.parent ?? "";
       const parent = parentId ? byId.get(parentId) : undefined;
-
       if (parent) {
         parent.children.push(node);
       } else {
@@ -61,30 +80,32 @@ export default function Sidebar({ open = false, onClose }: Props) {
     return roots;
   }, [categories]);
 
-  const categoriesById = useMemo(
-    () => new Map(categories.map((category) => [category._id, category])),
-    [categories],
-  );
+  // Auto-expand and highlight based on pathname
+  useEffect(() => {
+    if (!pathname || categories.length === 0) return;
 
-  const getCategoryPath = (node: CategoryNode) => {
-    const path: string[] = [node.slug];
-    let parentId = node.parent ?? "";
+    categoryTree.forEach((parent, i) => {
+      const parentPath = getCategoryPath(parent);
+      
+      // Check if current path is this parent or its children
+      if (pathname.startsWith(parentPath)) {
+        setOpenIndex(i);
+        
+        parent.children.forEach((child, j) => {
+          const childPath = getCategoryPath(child);
+          if (pathname.startsWith(childPath)) {
+            setOpenChild(`${i}-${j}`);
+          }
+        });
+      }
+    });
+  }, [pathname, categories.length, categoryTree]);
 
-    while (parentId) {
-      const parent = categoriesById.get(parentId);
-
-      if (!parent) break;
-      path.unshift(parent.slug);
-      parentId = parent.parent ?? "";
-    }
-
-    return `/category/${path.join("/")}`;
-  };
+  const isActive = (path: string) => pathname === path;
 
   return (
     <aside className={`sidebar ${open ? "sidebar--open" : ""}`}>
 
-      {/* Header row */}
       <div className="sidebar-close-row">
         <p className="sidebar-heading">Categories</p>
         <button className="sidebar-close-btn" onClick={onClose}>
@@ -93,64 +114,82 @@ export default function Sidebar({ open = false, onClose }: Props) {
       </div>
 
       <div className="sidebar-list">
-        {categoryTree.map((cat, i) => (
-          <div key={i}>
+        {categoryTree.map((cat, i) => {
+          const catPath = getCategoryPath(cat);
+          const active = isActive(catPath);
 
-            <div
-              className={`sidebar-parent ${openIndex === i ? "open" : ""}`}
-              onClick={() => setOpenIndex(openIndex === i ? null : i)}
-            >
-              <span className="sidebar-parent-label">
-                <span className="sidebar-dot" />
-                <Link href={getCategoryPath(cat)} onClick={onClose}>
-                  {cat.name}
-                </Link>
-              </span>
-              {cat.children.length > 0 && (
-                <span className={`sidebar-chevron ${openIndex === i ? "rotated" : ""}`}>▶</span>
-              )}
-            </div>
+          return (
+            <div key={i}>
+              <div
+                className={`sidebar-parent ${openIndex === i ? "open" : ""} ${active ? "active" : ""}`}
+              >
+                <span className="sidebar-parent-label" onClick={() => setOpenIndex(openIndex === i ? null : i)}>
+                  <span className="sidebar-dot" />
+                  <Link href={catPath}>
+                    {cat.name}
+                  </Link>
+                </span>
+                {cat.children.length > 0 && (
+                  <span 
+                    className={`sidebar-chevron ${openIndex === i ? "rotated" : ""}`}
+                    onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                  >
+                    ▶
+                  </span>
+                )}
+              </div>
 
-            {openIndex === i && cat.children.length > 0 && (
-              <div className="sidebar-children">
-                {cat.children.map((sub, j) => {
-                  const key = `${i}-${j}`;
-                  return (
-                    <div key={j}>
-                      <div
-                        className={`sidebar-sub ${openChild === key ? "open" : ""}`}
-                        onClick={() => setOpenChild(openChild === key ? null : key)}
-                      >
-                        <Link href={getCategoryPath(sub)} onClick={onClose}>
-                          {sub.name}
-                        </Link>
-                        {sub.children.length > 0 && (
-                          <span className={`sidebar-sub-chevron ${openChild === key ? "rotated" : ""}`}>▶</span>
+              {openIndex === i && cat.children.length > 0 && (
+                <div className="sidebar-children">
+                  {cat.children.map((sub, j) => {
+                    const key = `${i}-${j}`;
+                    const subPath = getCategoryPath(sub);
+                    const subActive = isActive(subPath);
+
+                    return (
+                      <div key={j}>
+                        <div
+                          className={`sidebar-sub ${openChild === key ? "open" : ""} ${subActive ? "active" : ""}`}
+                        >
+                          <Link href={subPath}>
+                            {sub.name}
+                          </Link>
+                          {sub.children.length > 0 && (
+                            <span 
+                              className={`sidebar-sub-chevron ${openChild === key ? "rotated" : ""}`}
+                              onClick={() => setOpenChild(openChild === key ? null : key)}
+                            >
+                              ▶
+                            </span>
+                          )}
+                        </div>
+
+                        {openChild === key && sub.children.length > 0 && (
+                          <div className="sidebar-grandchildren">
+                            {sub.children.map((child, k) => {
+                              const childPath = getCategoryPath(child);
+                              const childActive = isActive(childPath);
+
+                              return (
+                                <Link
+                                  key={k}
+                                  href={childPath}
+                                  className={`sidebar-leaf ${childActive ? "active" : ""}`}
+                                >
+                                  {child.name}
+                                </Link>
+                              );
+                            })}
+                          </div>
                         )}
                       </div>
-
-                      {openChild === key && sub.children.length > 0 && (
-                        <div className="sidebar-grandchildren">
-                          {sub.children.map((child, k) => (
-                            <Link
-                              key={k}
-                              href={getCategoryPath(child)}
-                              className="sidebar-leaf"
-                              onClick={onClose}
-                            >
-                              {child.name}
-                            </Link>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-
-          </div>
-        ))}
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
     </aside>
   );

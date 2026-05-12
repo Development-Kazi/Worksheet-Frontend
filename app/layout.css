@@ -15,14 +15,14 @@
 
 /* ── Root Variables ── */
 :root {
-  --font-primary: 'Plus Jakarta Sans', system-ui, sans-serif;
-  --brand-blue: #2563eb;
-  --brand-blue-dark: #1d4ed8;
-  --brand-blue-soft: #eff6ff;
-  --brand-blue-mid: #dbeafe;
-  --text-primary: #111827;
-  --text-secondary: #4b5563;
-  --text-muted: #9ca3af;
+  --font-primary: var(--font-primary), system-ui, sans-serif;
+  --brand-blue: var(--brand-primary);
+  --brand-blue-dark: var(--brand-primary-dark);
+  --brand-blue-soft: var(--brand-primary-soft);
+  --brand-blue-mid: var(--brand-primary-mid);
+  --text-primary: var(--text-primary);
+  --text-secondary: var(--text-secondary);
+  --text-muted: var(--text-muted);
   --border: #e8eaf0;
   --bg-page: #f8fafc;
   --bg-white: #ffffff;

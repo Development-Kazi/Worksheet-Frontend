@@ -86,17 +86,6 @@ const buildFullUrl = (path: string) => {
   return new URL(path, siteUrl).toString();
 };
 
-const renderWorksheetRating = (rating?: number) => {
-  if (!rating || rating <= 0) return null;
-
-  return (
-    <div className="worksheet-detail-meta-item">
-      <span className="worksheet-detail-meta-label">Rating</span>
-      <span className="worksheet-detail-meta-value">{rating}/5</span>
-    </div>
-  );
-};
-
 async function resolveCategoryWorksheetData(slugArray: string[]) {
   let categories: ClientCategory[] = [];
   let worksheets: ClientWorksheet[] = [];
@@ -286,36 +275,52 @@ export default async function CategoryPage({ params }: PageProps) {
 
     return (
       <div className="category-page">
-        <div className="category-main">
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify(categoryStructuredData),
-            }}
-          />
-          <div className="category-page-header">
-            <Breadcrumb paths={paths} />
-            <h1 className="category-page-title">{currentTitle}</h1>
-            {currentCategory.metaDescription ? (
-              <div
-                className="category-page-desc category-page-desc-rich"
-                dangerouslySetInnerHTML={{ __html: currentCategory.metaDescription }}
-              />
-            ) : (
-              <p className="category-page-desc">
-                Explore worksheets and learning materials for{" "}
-                <span>{currentName}</span>.
-              </p>
-            )}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(categoryStructuredData),
+          }}
+        />
+        
+        <div className="unified-layout">
+          {/* Main Content Column (Center) */}
+          <div className="layout-center-col">
+            <div className="category-page-header">
+              <Breadcrumb paths={paths} />
+              <h1 className="category-page-title">{currentTitle}</h1>
+              {currentCategory.metaDescription ? (
+                <div
+                  className="category-page-desc category-page-desc-rich"
+                  dangerouslySetInnerHTML={{ __html: currentCategory.metaDescription }}
+                />
+              ) : (
+                <p className="category-page-desc">
+                  Explore worksheets and learning materials for{" "}
+                  <span>{currentName}</span>.
+                </p>
+              )}
+            </div>
+
+            <SearchableCategoryContent
+              currentName={currentName}
+              parentName={parentName}
+              slugPrefix={slugArray.join("/")}
+              childCategories={childCategories}
+              worksheetItems={worksheetItems}
+            />
           </div>
 
-          <SearchableCategoryContent
-            currentName={currentName}
-            parentName={parentName}
-            slugPrefix={slugArray.join("/")}
-            childCategories={childCategories}
-            worksheetItems={worksheetItems}
-          />
+          {/* Sidebar Ads Column (Right) */}
+          <aside className="layout-right-col">
+            <div className="ad-placeholder">
+              <span>Advertisement</span>
+              <p>Your Ad Here</p>
+            </div>
+            <div className="ad-placeholder sticky-ad">
+              <span>Sponsored</span>
+              <p>Promoted Content</p>
+            </div>
+          </aside>
         </div>
       </div>
     );
@@ -347,7 +352,6 @@ export default async function CategoryPage({ params }: PageProps) {
     },
   ];
 
-  const categoryHref = buildCategoryHref(categoriesById, worksheetCategory);
   const downloadHref = worksheet.fileUrl
     ? `/api/download?url=${encodeURIComponent(worksheet.fileUrl)}`
     : undefined;
@@ -377,143 +381,133 @@ export default async function CategoryPage({ params }: PageProps) {
         : undefined,
   };
 
-
-
   return (
     <div className="worksheet-detail-page">
-      <div className="worksheet-container">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(worksheetStructuredData),
-          }}
-        />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(worksheetStructuredData),
+        }}
+      />
 
-        {/* Breadcrumbs */}
-        <div className="breadcrumb-wrapper">
-          <Breadcrumb paths={worksheetPaths} />
-        </div>
+      <div className="unified-layout">
+        {/* Main Content Column (Center) */}
+        <div className="layout-center-col">
+          <div className="breadcrumb-wrapper">
+            <Breadcrumb paths={worksheetPaths} />
+          </div>
 
-        <div className="worksheet-layout">
-          {/* Left Column (Main Content) */}
-          <div className="worksheet-main-content">
-            
-            <header className="worksheet-header">
-              <h1 className="worksheet-title">{worksheetTitle}</h1>
-              <p className="worksheet-subtitle">{worksheetDescription}</p>
-
-              {/* Author / Meta Row */}
-              <div className="author-row">
-                <img 
-                  src={worksheet.authorImage || "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150"} 
-                  alt={worksheet.author || "Author"} 
-                  className="author-img"
-                />
-                <div className="author-meta">
-                  <h4>{worksheet.author || "Admin User"}</h4>
-                  <p>
-                    Published { (worksheet.publishedDate || worksheet.createdAt)
-                      ? new Date(worksheet.publishedDate || worksheet.createdAt!).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-                      : "Oct 12, 2023"}
-                  </p>
+          <div className="worksheet-premium-view">
+            <header className="ws-premium-header">
+              <h1 className="ws-premium-title">{worksheetTitle}</h1>
+              <div className="ws-premium-meta-row">
+                <div className="author-pill">
+                  <img 
+                    src={worksheet.authorImage || "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150"} 
+                    alt={worksheet.author} 
+                  />
+                  <span>By {worksheet.author || "Admin User"}</span>
+                </div>
+                <div className="date-pill">
+                  Published { (worksheet.publishedDate || worksheet.createdAt)
+                    ? new Date(worksheet.publishedDate || worksheet.createdAt!).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                    : "Oct 12, 2023"}
                 </div>
               </div>
             </header>
 
-
-            {worksheet.description ? (
-              <div
-                className="worksheet-detail-description"
-                style={{ marginTop: '3rem' }}
-                dangerouslySetInnerHTML={{ __html: worksheet.description }}
-              />
-            ) : null}
-
-            
-          </div>
-
-          {/* Right Column (Sidebar) */}
-          <aside className="worksheet-sidebar">
-            
-            <div className="download-card">
-              <div className="card-media">
+            <div className="ws-main-media-card">
+              <div className="ws-preview-container">
                 <img 
                   src={worksheet.thumbnail || "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=800"} 
                   alt={worksheetTitle} 
-                  className="card-img"
+                  className="ws-main-image"
                 />
               </div>
-
-              <div className="btn-group">
-                {downloadHref ? (
-                  <a href={downloadHref} className="btn-secondary">
-                    <Download size={18} />
-                    Download PDF
-                  </a>
-                ) : (
-                  <button className="btn-secondary disabled" disabled>
-                    <Download size={18} />
-                    Coming Soon
-                  </button>
-                )}
+              
+              <div className="ws-download-box">
+                <div className="ws-download-header">
+                  <h3>Get this worksheet</h3>
+                  <p>Download as high-quality PDF</p>
+                </div>
+                <div className="ws-download-actions">
+                  {downloadHref ? (
+                    <a href={downloadHref} className="ws-primary-download-btn">
+                      <Download size={20} />
+                      Download PDF Now
+                    </a>
+                  ) : (
+                    <button className="ws-primary-download-btn disabled" disabled>
+                      <Download size={20} />
+                      Coming Soon
+                    </button>
+                  )}
+                </div>
+                <div className="ws-features-mini">
+                  {worksheet.includes ? (
+                    <div className="ws-includes-short" dangerouslySetInnerHTML={{ __html: worksheet.includes }} />
+                  ) : (
+                    <>
+                      <div className="mini-feature"><CheckSquare size={14} /> Full Color</div>
+                      <div className="mini-feature"><CheckSquare size={14} /> Printable</div>
+                      <div className="mini-feature"><CheckSquare size={14} /> Lifetime Access</div>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
 
-            <div className="includes-card">
-              <h3 className="includes-title">Includes</h3>
-              {worksheet.includes ? (
-                <div 
-                  className="includes-rich-content"
-                  dangerouslySetInnerHTML={{ __html: worksheet.includes }}
-                />
-              ) : (
-                <div className="includes-list">
-                  <div className="includes-item">
-                    <BookOpen size={20} />
-                    Comprehensive Theory Guide
-                  </div>
-                  <div className="includes-item">
-                    <ListChecks size={20} />
-                    25 Practice Problems
-                  </div>
-                  <div className="includes-item">
-                    <CheckSquare size={20} />
-                    Step-by-step Answer Key
-                  </div>
-                </div>
+            <div className="ws-content-sections">
+              {worksheet.description && (
+                <section className="ws-section">
+                  <h2 className="ws-section-title">Overview</h2>
+                  <div className="ws-rich-text" dangerouslySetInnerHTML={{ __html: worksheet.description }} />
+                </section>
               )}
+
             </div>
             
-          </aside>
+            {/* You Might Also Like */}
+            {allWorksheets && worksheetCategory && (
+              (() => {
+                const related = allWorksheets.filter(
+                  (item) =>
+                    item.category?._id === worksheetCategory._id &&
+                    item._id !== worksheet._id
+                );
+                if (related.length === 0) return null;
+                return (
+                  <section className="ws-related-section">
+                    <h2 className="ws-section-title">You might also like</h2>
+                    <div className="ws-related-grid">
+                      {related.slice(0, 4).map((item) => (
+                        <PDFCard
+                          key={item._id}
+                          title={item.title}
+                          subject={worksheetCategory.name}
+                          thumbnail={item.thumbnail}
+                          href={buildCategoryHref(categoriesById, worksheetCategory) + "/" + item.slug}
+                        />
+                      ))}
+                    </div>
+                  </section>
+                );
+              })()
+            )}
+          </div>
         </div>
 
-        {/* You Might Also Like Section */}
-        {allWorksheets && worksheetCategory && (
-          (() => {
-            const related = allWorksheets.filter(
-              (item) =>
-                item.category?._id === worksheetCategory._id &&
-                item._id !== worksheet._id
-            );
-            if (related.length === 0) return null;
-            return (
-              <section className="related-worksheets-section">
-                <h2 className="related-title">You might also like</h2>
-                <div className="related-grid">
-                  {related.slice(0, 4).map((item) => (
-                    <PDFCard
-                      key={item._id}
-                      title={item.title}
-                      subject={worksheetCategory.name}
-                      thumbnail={item.thumbnail}
-                      href={buildCategoryHref(categoriesById, worksheetCategory) + "/" + item.slug}
-                    />
-                  ))}
-                </div>
-              </section>
-            );
-          })()
-        )}
+        {/* Sidebar Ads Column (Right) */}
+        <aside className="layout-right-col">
+          <div className="ad-placeholder">
+            <span>Advertisement</span>
+            <p>Your Ad Here</p>
+          </div>
+          <div className="ad-placeholder sticky-ad">
+            <span>Sponsored</span>
+            <p>Promoted Content</p>
+          </div>
+        </aside>
       </div>
     </div>
   );

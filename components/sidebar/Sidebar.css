@@ -189,4 +189,31 @@
   color: var(--brand-blue);
   background: var(--brand-blue-soft);
   border-radius: var(--radius-sm);
-}
+}
+/* -- Active State Highlighting -- */
+.sidebar-parent.active {
+  background: var(--brand-primary-soft) !important;
+  border-left: 3px solid var(--brand-blue) !important;
+}
+
+.sidebar-parent.active .sidebar-parent-label a {
+  color: var(--brand-blue) !important;
+  font-weight: 700 !important;
+}
+
+.sidebar-sub.active {
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.sidebar-sub.active a {
+  color: var(--brand-blue) !important;
+  font-weight: 700 !important;
+}
+
+.sidebar-leaf.active {
+  background: #f1f5f9 !important;
+  color: var(--brand-blue) !important;
+  font-weight: 700 !important;
+  border-radius: 6px;
+}

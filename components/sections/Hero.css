@@ -46,8 +46,8 @@
 
 .hero-pill {
   display: inline-block;
-  background: #f0f7ff;
-  color: #2563eb;
+  background: var(--brand-primary-soft);
+  color: var(--brand-primary);
   padding: 6px 16px;
   border-radius: 100px;
   font-size: 11px;
@@ -60,14 +60,14 @@
 .hero-heading {
   font-size: clamp(32px, 6vw, 54px);
   font-weight: 800;
-  color: #1a1a1a;
+  color: var(--text-primary);
   line-height: 1.15;
   letter-spacing: -1.5px;
   margin-bottom: 24px;
 }
 
 .hero-heading-accent {
-  color: #2563eb;
+  color: var(--brand-primary);
 }
 
 .hero-subtext {
@@ -87,7 +87,7 @@
 }
 
 .btn-primary {
-  background: #1d4ed8;
+  background: var(--brand-primary-dark);
   color: #ffffff;
   padding: 14px 28px;
   border-radius: 8px;
@@ -106,7 +106,7 @@
 
 .btn-secondary {
   background: #f3f4f6;
-  color: #2563eb;
+  color: var(--brand-primary);
   padding: 14px 28px;
   border-radius: 8px;
   font-weight: 600;
@@ -155,7 +155,7 @@
 .stat-value {
   font-size: 28px;
   font-weight: 800;
-  color: #1a1a1a;
+  color: var(--text-primary);
   letter-spacing: -1px;
 }
 

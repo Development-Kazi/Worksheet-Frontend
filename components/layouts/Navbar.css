@@ -308,40 +308,43 @@
 }
 
 .navbar-mega-menu {
-  position: absolute;
-  top: 100%;
-  padding-top: 12px; /* This creates the visual gap while maintaining the hover area */
-  left: 50%;
-  transform: translateX(-50%);
+  position: fixed;
+  top: var(--nav-height);
+  left: 0;
+  width: 100vw;
   z-index: 110;
-  width: 95vw;
-  max-width: 1200px;
-  animation: dropdownIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  background: var(--nav-bg);
+  border-bottom: 1.5px solid var(--nav-border);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+  animation: dropdownIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0;
 }
 
 .mega-menu-content-card {
-  background: #ffffff;
-  border: 1px solid var(--nav-border);
-  border-radius: 16px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-  padding: 40px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 40px 24px;
+  max-width: 1280px;
+  margin: 0 auto;
 }
 
 @keyframes dropdownIn {
   from {
     opacity: 0;
-    transform: translateX(-50%) translateY(10px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0);
   }
 }
 
 .mega-menu-grid-container {
-  max-width: 1200px; /* Standardizing centered width */
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 0 24px;
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   gap: 40px;
